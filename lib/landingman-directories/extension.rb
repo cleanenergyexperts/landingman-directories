@@ -25,7 +25,15 @@ module Landingman
       app.config[:js_dir]       = options.js_dir
       app.config[:images_dir]   = options.images_dir
       app.config[:fonts_dir]    = options.fonts_dir
-      app.config[:layouts_dir]  = options.layouts_dir
+
+      # Use _layouts if layouts doesn't exist
+      if options.layouts_dir == 'layouts' &&
+        !Dir.exist?(File.join(app.root, 'source', 'layouts')) &&
+        Dir.exist?(File.join(app.root, 'source', '_layouts')) then
+        app.config[:layouts_dir] = '_layouts'
+      else
+        app.config[:layouts_dir] = options.layouts_dir
+      end
     end
   end
 end
